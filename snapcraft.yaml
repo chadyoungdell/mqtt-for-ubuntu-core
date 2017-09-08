@@ -1,19 +1,25 @@
+# Author Thibaut Rouffineau <thibaut.rouffineau@canonical.com>
+# Updated by Chad Young <chad.young@dell.com>
+
 name: mqtttestclient
 version: 1
-vendor: Thibaut Rouffineau <thibaut.rouffineau@canonical.com>
 summary: MQTT client on Eclipse Foundation sandbox
 description: This app is a small client using Eclipse Foundation MQTT client and using the Eclipse Foundation sandbox
-icon: ./icons/Paho.png
 
-binaries:
- mqttpublish: 
-  exec: bin/mqttpublish
+grade: devel # must be 'stable' to release into candidate/stable channels
+confinement: devmode # use 'strict' once you have the right plugs and slots
+
+
+apps:
+    mqttpublish:
+        command: bin/mqttpublish
 
 parts:
- mqtt:
-  plugin: python3
-  source: git://git.eclipse.org/gitroot/paho/org.eclipse.paho.mqtt.python
- publish:
-  plugin: copy
-  files:
-    ./bin/mqttpublish.py: bin/mqttpublish
+    mqtt:
+        plugin: python
+        source: https://github.com/eclipse/paho.mqtt.python.git
+    files:
+        plugin: dump
+        source: .
+        organize:
+            ./bin/mqttpublish.py: bin/mqttpublish
